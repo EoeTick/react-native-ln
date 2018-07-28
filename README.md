@@ -5,3 +5,5 @@
 打算一点点推进发表，加油。
 
 ## react-native 知识点
+[js中的constructor()](https://github.com/EoeTick/react-native-ln/blob/master/rn-learning/README.md)<br>
+
