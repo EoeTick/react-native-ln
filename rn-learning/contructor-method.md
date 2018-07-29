@@ -34,7 +34,14 @@ Class components should always call the base constructor with props.
 组件类总是应该使用props调用基础构造函数。
 
 疑惑2：为什么派生类一定要使用*super*来调用父类的构造函数？
-这是因为子组件本身没有this对象，而是继承父类的this对象。如果不调用super方法，子类就得不到this对象。如：*this.props*。
+以下来自官方文档的说明：
+super关键字用于访问和调用一个对象的父对象上的函数。
+```javascript
+super([arguments]);
+```
+在构造函数中使用时，*super*关键字将单独出现，并且必须在使用*this*关键字之前使用。
+即理解为：
+如果不调用super方法，子类就得不到this对象。如：*this.props*。
 
 大部分问题和结论都是基于其他博客或者官方文档得出的，加上自己的小小理解。
 ## 参考自
