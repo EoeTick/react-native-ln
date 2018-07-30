@@ -1,0 +1,159 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://cdn.bootcss.com/bootstrap/4.0.0/css/bootstrap.min.css"
+          integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <link rel="stylesheet" href="../../css/my.css">
+    <title>prototype chain</title>
+</head>
+<body>
+<div class="container" style="margin-top: 20vh;margin-bottom: 10vh">
+    <!-- Content here -->
+    <h1>Hello, world!</h1>
+    <div class="row">
+        <div class="col-12 context">
+
+
+            <!--<div class="alert alert-dark highlight">-->
+            <!--<span class="code" id="code-0">console.log(person1.constructor == Person);</span><span-->
+            <!--class="badge badge-info">4</span>-->
+            <!--</div>-->
+            <!--<div class="alert alert-dark">-->
+            <!--console.log(person1.constructor == Person); //true-->
+            <!--</div>-->
+            <!--<div class="alert alert-dark highlight">-->
+            <!--<pre>-->
+            <!--<code>-->
+            <!--console.log(person2.constructor == Person); //true-->
+            <!--</code>-->
+            <!--</pre>-->
+            <!--</div>-->
+        </div>
+    </div>
+
+
+</div>
+
+<!-- Optional JavaScript -->
+<!-- jQuery first, then Popper.js, then Bootstrap JS -->
+<script src="https://cdn.bootcss.com/jquery/3.2.1/jquery.slim.min.js"
+        integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
+        crossorigin="anonymous"></script>
+<script src="https://cdn.bootcss.com/popper.js/1.12.9/umd/popper.min.js"
+        integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
+        crossorigin="anonymous"></script>
+<script src="https://cdn.bootcss.com/bootstrap/4.0.0/js/bootstrap.min.js"
+        integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
+        crossorigin="anonymous"></script>
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        // part1
+        var o1 = {};
+        var o2 = new Object();
+        var o3 = new f1();
+
+        //o1 o2 o3都为普通对象
+
+        function f1() {
+        };
+        var f2 = function () {
+        };
+        var f3 = new Function('str', 'console.log(str)');
+        // f1 f2 f3都为函数对象(定义：通过new Function()创建的对象都是函数对象)
+        // Function Object也都是通过new Function()创建
+
+        // console.log(typeof Object); //function
+        // console.log(typeof Function); // function
+
+        //  console.log(typeof f1); // function
+        // console.log(typeof f2); // function
+        // console.log(typeof f3); // function
+
+        // console.log(typeof o1); // object
+        // console.log(typeof o2);// object
+        // console.log(typeof o3); //object
+
+
+        //part2
+        function Person(name, age, job) {
+            this.name = name;
+            this.age = age;
+            this.job = job;
+            this.sayName = function () {
+                alert(this.name)
+            }
+        }
+
+        //person1和person2都是Person的实例
+        var person1 = new Person('Zaxlct', 28, 'Software Engineer');
+        var person2 = new Person('Mick', 23, 'Doctor');
+
+        // console.log(person1.constructor == Person); //true
+        // console.log(person2.constructor == Person); //true
+        // 实例的构造函数属性(constructor)指向构造函数。
+
+        // part3
+        // 每个对象都有 _proto_ 属性，但只有函数对象才有prototype属性。prototype属性指向函数的原型对象。
+        // 原型对象就是普通对象。
+        // 在默认情况下，所有的原型对象都会自动获得一个 constructor（构造函数）属性，这个属性（是一个指针）指向 prototype 属性所在的函数（Person）
+        //Person.prototype.constructor == Person
+        // 结论: 原型对象(Person.prototype)是构造函数（Person）的一个实例。
+
+        // console.log(Person.prototype) //Person{}貌似有错？
+        // console.log(typeof Person.prototype) //Object
+        // console.log(typeof Function.prototype) // Function，这个特殊
+        // console.log(typeof Object.prototype) // Object
+        // console.log(typeof Function.prototype.prototype) //undefined
+
+        //Function。prototype为什么是函数对象呢？
+        // var A = new Function ();
+        // Function.prototype = A;
+        //凡是通过new Function()产生的对象都是函数对象，如果A是个实例且是函数对象,那么Function.prototype是函数对象。
+
+        //渲染
+        data = [
+            'typeof Object',
+            'typeof Function',
+            'typeof f1',
+            'typeof f2',
+            'typeof f3',
+            'typeof o1',
+            'typeof o2',
+            'typeof o3',
+
+            'person1.constructor == Person',
+            'person2.constructor == Person',
+
+            'Person.prototype.constructor == Person',
+            'Person.prototype',
+            'typeof Person.prototype',
+            'typeof Function.prototype',
+            'typeof Object.prototype',
+            'typeof Function.prototype.prototype',
+        ];
+
+        //遍历data，每个元素动态解析一次获取结果，生成alert
+        $.each(data, function (index, ele) {
+
+            let result = Boolean;
+            eval("{result=" + ele + "}");
+            console.log(result);
+            $('.context').append(
+                "<div class=\"alert alert-dark highlight\">" +
+                "<span class=\"code\" id=\"code-0\">" + "console.log(" + ele + ");" + "</span>" +
+                "&nbsp;&nbsp;&nbsp;&nbsp;<span class=\"btn btn-sm btn-outline-secondary\">" + result + "</span>" +
+                "</div>"
+            );
+        })
+
+
+    })
+</script>
+</body>
+</html>
